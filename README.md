@@ -22,6 +22,10 @@ Shuttle detetcor with YOLOv5: training/shuttle_detector_training.ipynb
 
 Badminton court keypoint with Pytorch: training/badminton_court_keypoints_training.ipynb
 
+## Input Video
+
+Drive Link: https://drive.google.com/file/d/1BRlbyLbf5xpHXbuPurqSLL6Hk3T1Tdmc/view?usp=sharing
+
 ### 1. Object Detection and Tracking:
 **Approach**:
 - **Detection**: YOLOv5 is used to detect badminton players, shuttlecock, and racket in each frame of the video.
