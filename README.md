@@ -49,19 +49,5 @@ Drive Link: https://drive.google.com/file/d/1BRlbyLbf5xpHXbuPurqSLL6Hk3T1Tdmc/vi
 
 ### 5. Shuttle Velocity
 **Approach**:
-The shuttle velocity is calculated based on the displacement of the shuttlecock over time. Here's a step-by-step description of how it's calculated:
-
-1. **Detection and Tracking**: Initially, we detect the shuttlecock in each frame using YOLOv5 object detection. We then track its position over time to obtain a series of centroid points representing its trajectory.
-
-2. **Displacement Calculation**: We compute the displacement of the shuttlecock by measuring the Euclidean distance between its centroid points in consecutive frames. The displacement represents the straight-line distance traveled by the shuttlecock between two consecutive frames.
-
-3. **Time Calculation**: We calculate the time elapsed between consecutive frames. This is done by measuring the time difference between the current frame and the previous frame.
-
-4. **Velocity Calculation**: Once we have the displacement and time elapsed, we can calculate the shuttle velocity
-   
-   \[ \text{Velocity} = \frac{\text{Displacement}}{\text{Time}} \]
-   
-   The velocity represents the speed at which the shuttlecock is moving in pixel per second (m/s).
-
-5. **Display on Frame**: Finally, we display the calculated shuttle velocity on the video frames using the `cv2.putText()` function.
-   Unit of this velocity would be pixel per second and we need the conversion factor to convert it into metre per second.
+The shuttle velocity is calculated based on the displacement of the shuttlecock over time.
+Unit of this velocity would be pixel per second and we need the conversion factor to convert it into metre per second.
