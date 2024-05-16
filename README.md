@@ -12,7 +12,7 @@ Fine Tuned YOLOv5 for shuttle detection
 
 Court Key point extraction
 
-Trained YOLOV5 model Data Used https://universe.roboflow.com/mathieu-cartron/shuttlecock-cqzy3/dataset/1/download
+Trained YOLOV5 model Data Used https://universe.roboflow.com/mathieu-cartron/shuttlecock-cqzy3/dataset/1/download, https://universe.roboflow.com/intern-may-2022-vb6y6/badminton-qlaad
 
 Trained badminton court key point model:
 
