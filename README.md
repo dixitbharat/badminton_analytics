@@ -18,14 +18,20 @@ Trained badminton court key point model:
 ## Training
 
 Shuttle detetcor with YOLO: training/shuttle_detector_training.ipynb
+
 Badminton court keypoint with Pytorch: training/badminton_court_keypoints_training.ipynb
 
 ## Requirements
 
 python3.8
+
 ultralytics
-pytroch
+
+pytorch
+
 pandas
+
 numpy
+
 opencv
 
