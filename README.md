@@ -12,9 +12,8 @@ Fine Tuned YOLO for shuttle detection
 
 Court Key point extraction
 
-Trained YOLOV5 model: https://drive.google.com/file/d/1UZwiG1jkWgce9lNhxJ2L0NVjX1vGM05U/view?usp=sharing
-
-Trained badminton court key point model: https://drive.google.com/file/d/1QrTOF1ToQ4plsSZbkBs3zOLkVt3MBlta/view?usp=sharing
+Trained YOLOV5 model: 
+Trained badminton court key point model:
 
 ## Training
 
