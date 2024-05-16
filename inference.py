@@ -4,7 +4,7 @@ from scipy.spatial import distance as dist
 import time
 
 # Load YOLOv5
-model = torch.hub.load('ultralytics/yolov5', 'custom', path='path_to_yolov5s_model.pt', source='local')
+model = torch.hub.load('ultralytics/yolov5', 'custom', path='yolov5s_model.pt', source='local')
 
 # Define classes
 classes = ['player', 'shuttlecock', 'racket']
@@ -106,5 +106,5 @@ def process_video(video_path):
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    video_path = "path_to_video.mp4"  # Path to your video file
+    video_path = "input_video"  # Path to your video file
     process_video(video_path)
