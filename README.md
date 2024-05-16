@@ -18,7 +18,7 @@ Trained badminton court key point model:
 
 ## Training
 
-Shuttle detetcor with YOLOv5: training/shuttle_detector_training.ipynb
+Shuttle detetcor with YOLOv5:
 ```bash
 $ python3 train.py --data coco.yaml --epochs 300 --weights '' --cfg yolov5n.yaml  --batch-size 128
 ```
