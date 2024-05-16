@@ -8,7 +8,7 @@ This project analyzes badminton players in a video to measure the Number of fore
 
 YOLO v5 for player detection
 
-Fine Tuned YOLO for shuttle detection
+Fine Tuned YOLOv5 for shuttle detection
 
 Court Key point extraction
 
@@ -18,7 +18,7 @@ Trained badminton court key point model:
 
 ## Training
 
-Shuttle detetcor with YOLO: training/shuttle_detector_training.ipynb
+Shuttle detetcor with YOLOv5: training/shuttle_detector_training.ipynb
 
 Badminton court keypoint with Pytorch: training/badminton_court_keypoints_training.ipynb
 
