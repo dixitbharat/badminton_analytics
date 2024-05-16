@@ -6,7 +6,7 @@ This project analyzes badminton players in a video to measure the Number of fore
 
 ## Models Used
 
-YOLO v8 for player detection
+YOLO v5 for player detection
 
 Fine Tuned YOLO for shuttle detection
 
