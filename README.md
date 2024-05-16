@@ -42,5 +42,3 @@ Badminton court keypoint with Pytorch: training/badminton_court_keypoints_traini
 **Approach**:
 - **Quadrant Definition**: The boundaries of the badminton court are divided into four quadrants: top-left, top-right, bottom-left, and bottom-right.
 - **Quadrant Time Calculation**: As the shuttlecock moves, it's continuously checked if its position falls within the boundaries of each quadrant. When the shuttlecock crosses into a new quadrant, a timer starts to measure the time spent in that quadrant. This process repeats for each quadrant, and the cumulative time spent in each quadrant is recorded.
-
-By addressing these four problems, the script provides insights into various aspects of a badminton game, including player performance, shot types, and court positioning.
