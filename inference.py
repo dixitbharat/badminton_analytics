@@ -44,6 +44,15 @@ def calculate_force(centroid_list, fps, mass=0.005, g=9.81):
     force = mass * g * velocity
     return force
 
+# Function to calculate shuttle velocity
+def calculate_shuttle_velocity(centroid_list, fps):
+    if len(centroid_list) < 2:
+        return None
+    displacement = dist.euclidean(centroid_list[0], centroid_list[-1])
+    time = len(centroid_list) / fps
+    velocity = displacement / time
+    return velocity
+
 # Function to calculate time spent in each quadrant
 def calculate_quadrant_times(centroid_list, fps):
     global quadrant_times
@@ -65,11 +74,8 @@ def process_video(video_path):
     cap = cv2.VideoCapture(video_path)
     fps = cap.get(cv2.CAP_PROP_FPS)
     prev_time = time.time()
-    prev_player1_racket_centroid = None
-    prev_player2_racket_centroid = None
-    shuttle_velocity_list = []
-    forehand_count = 0
-    backhand_count = 0
+    prev_shuttle_centroid = None
+    shuttle_centroid_list = []
     while cap.isOpened():
         ret, frame = cap.read()
         if not ret:
@@ -78,24 +84,20 @@ def process_video(video_path):
         for i in range(len(boxes)):
             if classes[class_ids[i]] == 'shuttlecock' and confidences[i] > 0.5:
                 shuttle_centroid = ((boxes[i][0] + boxes[i][2]) // 2, (boxes[i][1] + boxes[i][3]) // 2)
-                shuttle_velocity_list.append(shuttle_centroid)
-                force = calculate_force(shuttle_velocity_list, fps)
+                shuttle_centroid_list.append(shuttle_centroid)
+                force = calculate_force(shuttle_centroid_list, fps)
                 if force is not None:
-                    cv2.putText(frame, f"Shuttle Velocity: {velocity:.2f} m/s", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+                    cv2.putText(frame, f"Force exerted on shuttle: {force:.2f} N", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+                velocity = calculate_shuttle_velocity(shuttle_centroid_list, fps)
+                if velocity is not None:
+                    cv2.putText(frame, f"Shuttle Velocity: {velocity:.2f} m/s", (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
             elif classes[class_ids[i]] == 'player' and confidences[i] > 0.5:
-                player_racket_centroid = track_objects(frame)
-                if prev_player1_racket_centroid is not None:
-                    shot_type = classify_shot(prev_player1_racket_centroid, player_racket_centroid, shuttle_centroid)
-                    if shot_type == 'forehand':
-                        forehand_count += 1
-                    elif shot_type == 'backhand':
-                        backhand_count += 1
-                prev_player1_racket_centroid = player_racket_centroid
-        calculate_quadrant_times(shuttle_velocity_list, fps)
+                pass
+            elif classes[class_ids[i]] == 'racket' and confidences[i] > 0.5:
+                pass
+        calculate_quadrant_times(shuttle_centroid_list, fps)
         for i, (quadrant, time) in enumerate(quadrant_times.items()):
-            cv2.putText(frame, f"Time in {quadrant}: {time:.2f} s", (50, 100 + i * 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-        cv2.putText(frame, f"Forehand Shots: {forehand_count}", (50, 400), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-        cv2.putText(frame, f"Backhand Shots: {backhand_count}", (50, 450), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+            cv2.putText(frame, f"Time in {quadrant}: {time:.2f} s", (50, 150 + i * 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
         cv2.imshow('Frame', frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
@@ -106,5 +108,5 @@ def process_video(video_path):
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    video_path = "input_video.mp4"  # Path to your video file
+    video_path = "input_video.mkv"  # Path to your video file
     process_video(video_path)
