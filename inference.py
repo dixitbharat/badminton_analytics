@@ -1,6 +1,5 @@
 import cv2
 import torch
-import numpy as np
 from scipy.spatial import distance as dist
 import time
 
@@ -70,13 +69,27 @@ def is_within_quadrant(point, boundaries):
     x_min, y_min, x_max, y_max = boundaries
     return x_min <= x <= x_max and y_min <= y <= y_max
 
+# Function to classify shot as forehand or backhand
+def classify_shot(prev_racket_centroid, curr_racket_centroid, shuttle_centroid):
+    # Calculate distance between racket and shuttlecock centroids
+    distance_prev = dist.euclidean(prev_racket_centroid, shuttle_centroid)
+    distance_curr = dist.euclidean(curr_racket_centroid, shuttle_centroid)
+    
+    # If distance decreases, it's a forehand shot; otherwise, it's a backhand shot
+    if distance_curr < distance_prev:
+        return 'forehand'
+    else:
+        return 'backhand'
+
 # Function to process video
 def process_video(video_path):
     cap = cv2.VideoCapture(video_path)
     fps = cap.get(cv2.CAP_PROP_FPS)
     prev_time = time.time()
-    prev_shuttle_centroid = None
+    prev_racket_centroid = None
     shuttle_centroid_list = []
+    forehand_count = 0
+    backhand_count = 0
     while cap.isOpened():
         ret, frame = cap.read()
         if not ret:
@@ -86,16 +99,15 @@ def process_video(video_path):
             if classes[class_ids[i]] == 'shuttlecock' and confidences[i] > 0.5:
                 shuttle_centroid = ((boxes[i][0] + boxes[i][2]) // 2, (boxes[i][1] + boxes[i][3]) // 2)
                 shuttle_centroid_list.append(shuttle_centroid)
-                force = calculate_force(shuttle_centroid_list, fps)
-                if force is not None:
-                    cv2.putText(frame, f"Force exerted on shuttle: {force:.2f} N", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-                velocity = calculate_shuttle_velocity(shuttle_centroid_list, fps)
-                if velocity is not None:
-                    cv2.putText(frame, f"Shuttle Velocity: {velocity:.2f} m/s", (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
             elif classes[class_ids[i]] == 'player' and confidences[i] > 0.5:
-                pass
-            elif classes[class_ids[i]] == 'racket' and confidences[i] > 0.5:
-                pass
+                player_racket_centroid = track_objects(frame)
+                if prev_racket_centroid is not None:
+                    shot_type = classify_shot(prev_racket_centroid, player_racket_centroid, shuttle_centroid)
+                    if shot_type == 'forehand':
+                        forehand_count += 1
+                    elif shot_type == 'backhand':
+                        backhand_count += 1
+                prev_racket_centroid = player_racket_centroid
         calculate_quadrant_times(shuttle_centroid_list, fps)
         for i, (quadrant, time) in enumerate(quadrant_times.items()):
             cv2.putText(frame, f"Time in {quadrant}: {time:.2f} s", (50, 150 + i * 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
