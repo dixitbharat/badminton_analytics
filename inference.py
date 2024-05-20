@@ -2,6 +2,7 @@ import cv2
 import torch
 from scipy.spatial import distance as dist
 import time
+import numpy as np
 
 # Load YOLOv5
 model = torch.hub.load('ultralytics/yolov5', 'custom', path='yolov5s_model.pt', source='local')
